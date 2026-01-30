@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Music, Play, Pause, Heart, ExternalLink } from "lucide-react";
+import { Music, Heart, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Song {
@@ -7,8 +7,7 @@ interface Song {
   title: string;
   artist: string;
   message: string;
-  spotifyUrl?: string;
-  youtubeUrl?: string;
+  spotifyEmbedId: string;
 }
 
 const songs: Song[] = [
@@ -17,45 +16,44 @@ const songs: Song[] = [
     title: "Perfect",
     artist: "Ed Sheeran",
     message: "Porque eres perfecta para mí",
-    spotifyUrl: "https://open.spotify.com/track/0tgVpDi06FyKpA1z0VMD4v",
-    youtubeUrl: "https://www.youtube.com/watch?v=2Vv-BfVoq4g",
+    spotifyEmbedId: "0tgVpDi06FyKpA1z0VMD4v",
   },
   {
     id: 2,
     title: "All of Me",
     artist: "John Legend",
     message: "Todo de mí ama todo de ti",
-    spotifyUrl: "https://open.spotify.com/track/3U4isOIWM3VvDubwSI3y7a",
-    youtubeUrl: "https://www.youtube.com/watch?v=450p7goxZqg",
+    spotifyEmbedId: "3U4isOIWM3VvDubwSI3y7a",
   },
   {
     id: 3,
     title: "Thinking Out Loud",
     artist: "Ed Sheeran",
     message: "Te amaré hasta los 70 años y más",
-    spotifyUrl: "https://open.spotify.com/track/34gCuhDGsG4bRPIf9bb02f",
-    youtubeUrl: "https://www.youtube.com/watch?v=lp-EO5I60KA",
+    spotifyEmbedId: "34gCuhDGsG4bRPIf9bb02f",
   },
   {
     id: 4,
     title: "A Thousand Years",
     artist: "Christina Perri",
     message: "Te he amado por mil años",
-    spotifyUrl: "https://open.spotify.com/track/6lanRgr6wXibZr8KgzXxBl",
-    youtubeUrl: "https://www.youtube.com/watch?v=rtOvBOTyX00",
+    spotifyEmbedId: "6lanRgr6wXibZr8KgzXxBl",
   },
   {
     id: 5,
     title: "Can't Help Falling in Love",
     artist: "Elvis Presley",
     message: "No puedo evitar enamorarme de ti",
-    spotifyUrl: "https://open.spotify.com/track/44AyOl4qVkzS48vBsbNXaC",
-    youtubeUrl: "https://www.youtube.com/watch?v=vGJTaP6anOU",
+    spotifyEmbedId: "44AyOl4qVkzS48vBsbNXaC",
   },
 ];
 
 const MusicSection = () => {
-  const [hoveredSong, setHoveredSong] = useState<number | null>(null);
+  const [expandedSong, setExpandedSong] = useState<number | null>(null);
+
+  const toggleSong = (songId: number) => {
+    setExpandedSong(expandedSong === songId ? null : songId);
+  };
 
   return (
     <section className="py-20 px-4 bg-background">
@@ -67,7 +65,7 @@ const MusicSection = () => {
             </div>
           </div>
           <h2 className="text-4xl md:text-5xl font-display font-semibold text-foreground mb-4">
-            Canciones que Te Dedico
+            Canciones para Ti, Siria
           </h2>
           <p className="text-lg text-muted-foreground font-body max-w-xl mx-auto">
             Cada canción me recuerda a ti y a nuestro amor. Escúchalas y piensa en mí.
@@ -83,11 +81,12 @@ const MusicSection = () => {
           {songs.map((song) => (
             <div
               key={song.id}
-              className="group bg-card rounded-xl p-6 shadow-soft border border-border hover:border-love-rose/30 transition-all duration-300 hover:shadow-romantic"
-              onMouseEnter={() => setHoveredSong(song.id)}
-              onMouseLeave={() => setHoveredSong(null)}
+              className="group bg-card rounded-xl shadow-soft border border-border hover:border-love-rose/30 transition-all duration-300 hover:shadow-romantic overflow-hidden"
             >
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <button
+                onClick={() => toggleSong(song.id)}
+                className="w-full p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 text-left"
+              >
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 bg-gradient-romantic rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                     <Music className="w-6 h-6 text-primary-foreground" />
@@ -100,38 +99,43 @@ const MusicSection = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+                <div className="flex items-center gap-4">
                   <p className="text-love-rose italic font-body text-sm md:text-base">
                     "{song.message}"
                   </p>
-                  <div className="flex gap-2">
-                    {song.spotifyUrl && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-love-rose/30 text-love-rose hover:bg-love-rose hover:text-primary-foreground transition-colors"
-                        onClick={() => window.open(song.spotifyUrl, "_blank")}
-                      >
-                        <ExternalLink className="w-4 h-4 mr-1" />
-                        Spotify
-                      </Button>
-                    )}
-                    {song.youtubeUrl && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-love-rose/30 text-love-rose hover:bg-love-rose hover:text-primary-foreground transition-colors"
-                        onClick={() => window.open(song.youtubeUrl, "_blank")}
-                      >
-                        <ExternalLink className="w-4 h-4 mr-1" />
-                        YouTube
-                      </Button>
+                  <div className="flex-shrink-0">
+                    {expandedSong === song.id ? (
+                      <ChevronUp className="w-5 h-5 text-love-rose" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-love-rose" />
                     )}
                   </div>
                 </div>
-              </div>
+              </button>
+
+              {expandedSong === song.id && (
+                <div className="px-6 pb-6 animate-fade-in">
+                  <div className="rounded-xl overflow-hidden">
+                    <iframe
+                      src={`https://open.spotify.com/embed/track/${song.spotifyEmbedId}?utm_source=generator&theme=0`}
+                      width="100%"
+                      height="152"
+                      frameBorder="0"
+                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                      loading="lazy"
+                      className="rounded-xl"
+                    ></iframe>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <p className="text-muted-foreground text-sm font-body">
+            💕 Haz clic en cualquier canción para reproducirla
+          </p>
         </div>
       </div>
     </section>
