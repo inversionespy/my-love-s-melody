@@ -23,6 +23,8 @@ const HeroSection = () => {
           Para Ti,
           <br />
           <span className="text-gradient-romantic italic">Siria Tovar</span>
+          <br />
+          <span className="text-2xl md:text-3xl lg:text-4xl text-muted-foreground font-body">que eres la mujer de mi vida</span>
         </h1>
         
         <p className="text-xl md:text-2xl text-muted-foreground font-body italic max-w-2xl mx-auto mb-8">
