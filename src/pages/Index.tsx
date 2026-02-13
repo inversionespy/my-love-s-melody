@@ -4,11 +4,13 @@ import CouplePhotoSection from "@/components/CouplePhotoSection";
 import LoveLetterSection from "@/components/LoveLetterSection";
 import MusicSection from "@/components/MusicSection";
 import FooterSection from "@/components/FooterSection";
+import Sparkles from "@/components/Sparkles";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background relative">
       <FloatingHearts />
+      <Sparkles />
       <HeroSection />
       <CouplePhotoSection />
       <LoveLetterSection />
