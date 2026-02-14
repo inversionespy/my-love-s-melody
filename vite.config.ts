@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.ico', 'robots.txt', 'pwa-icon-192x192.svg'],
       manifest: {
         name: 'Te amooo',
         short_name: 'Te amooo',
@@ -26,14 +26,14 @@ export default defineConfig(({ mode }) => ({
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'pwa-icon.svg',
+            src: 'pwa-icon-192x192.svg',
             sizes: '192x192',
             type: 'image/svg+xml'
           },
           {
-            src: 'pwa-icon.svg',
+            src: 'pwa-icon-512x512.png',
             sizes: '512x512',
-            type: 'image/svg+xml'
+            type: 'image/png'
           }
         ]
       }
